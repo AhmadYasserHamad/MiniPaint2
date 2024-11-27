@@ -74,25 +74,6 @@ public class MiniPaint extends javax.swing.JFrame {
             canvas.refresh(drawingPanel.getGraphics());
         }
 
-        public void moveShape(Common shape) {
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            JPanel panel = new JPanel(new BorderLayout(5, 5));
-            JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
-            label.add(new JLabel("Enter New X", SwingConstants.RIGHT));
-            label.add(new JLabel("Enter New Y", SwingConstants.RIGHT));
-            panel.add(label, BorderLayout.WEST);
-            JPanel control = new JPanel(new GridLayout(0, 1, 2, 2));
-            JTextField newXCoordinate = new JTextField();
-            control.add(newXCoordinate);
-            JTextField newYCoordinate = new JTextField();
-            control.add(newYCoordinate);
-            panel.add(control, BorderLayout.CENTER);
-            JOptionPane.showMessageDialog(null, panel, "Move Shape", JOptionPane.QUESTION_MESSAGE);
-            Point newPosition = new Point(Integer.parseInt(newXCoordinate.getText()), Integer.parseInt(newYCoordinate.getText()));
-            shape.setPosition(newPosition);
-            drawingPanel.repaint();
-        }
-
         public void saveToFile() {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             JFileChooser fileSave = new JFileChooser();
@@ -419,7 +400,24 @@ public class MiniPaint extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        String choice = jComboBox1.getSelectedItem().toString();
+        String strIndex = choice.substring(choice.length() - 2);
+        if (isNumeric(strIndex)) {
+            int index = Integer.parseInt(strIndex) - 1;
+            Common shape = (Common) Array.get(canvas.getShapes(), index);
+            if (shape instanceof Circle) {
+                new ResizeCircle((Circle)shape).setVisible(true);
+            } else if (shape instanceof LineSegment) {
+                new ResizeLineSegment((LineSegment)shape).setVisible(true);
+            } else if (shape instanceof Square) {
+                new ResizeSquare((Square)shape).setVisible(true);
+            } else if (shape instanceof Rectangle) {
+                new ResizeRectangle((Rectangle)shape).setVisible(true);
+            }
+        } else {
+            ImageIcon image = new ImageIcon("warning.png");
+            JOptionPane.showMessageDialog(this, "Choosen option is not numeric, please try again!", "Message", JOptionPane.PLAIN_MESSAGE, image);
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -428,7 +426,7 @@ public class MiniPaint extends javax.swing.JFrame {
         if (isNumeric(strIndex)) {
             int index = Integer.parseInt(strIndex) - 1;
             Common shape = (Common) Array.get(canvas.getShapes(), index);
-            new Shape().moveShape(shape);
+            new MoveShape(shape).setVisible(true);
         } else {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Choosen option is not numeric, please try again!", "Message", JOptionPane.PLAIN_MESSAGE, image);
