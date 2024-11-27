@@ -8,14 +8,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Point;
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;
-import javax.swing.text.Position;
 import lab.pkg8.BackEnd.*;
 
 /**
@@ -29,6 +25,9 @@ public class MiniPaint extends javax.swing.JFrame {
      */
     public static lab.pkg8.BackEnd.Canvas canvas = new Canvas();
     public static Graphics g;
+    public static String shapeAdded;
+    private int shapesCounted = 0;
+    public static boolean added = false;
     private String counter = "";
     private int shapesAdded = 0;
     public static Draw drawingPanel;
@@ -47,10 +46,11 @@ public class MiniPaint extends javax.swing.JFrame {
         jComboBox1.addItem("Choose Shape");
     }
 
-    public String count() {
+    public String addIntoComboBox(String shapeAdded) {
         counter = String.format("%02d", shapesAdded + 1);
         shapesAdded++;
-        return counter;
+        jComboBox1.addItem(shapeAdded + counter);
+        return shapeAdded + counter;
     }
 
     public boolean isNumeric(String str) {
@@ -114,16 +114,12 @@ public class MiniPaint extends javax.swing.JFrame {
                     Canvas newCanvas = (Canvas) objectInput.readObject();
                     for (lab.pkg8.BackEnd.Shape shape : newCanvas.getShapes()) {
                         if (shape instanceof Circle) {
-                            jComboBox1.addItem("circle".concat(count()));
                             canvas.addShape(shape);
                         } else if (shape instanceof LineSegment) {
-                            jComboBox1.addItem("line".concat(count()));
                             canvas.addShape(shape);
                         } else if (shape instanceof Square) {
-                            jComboBox1.addItem("square".concat(count()));
                             canvas.addShape(shape);
                         } else {
-                            jComboBox1.addItem("rectangle".concat(count()));
                             canvas.addShape(shape);
                         }
                     }
@@ -142,9 +138,23 @@ public class MiniPaint extends javax.swing.JFrame {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.clearRect(0, 0, getWidth(), getHeight());
-            for (lab.pkg8.BackEnd.Shape shape : canvas.getShapes()) {
-                if (!(shape == null)) {
-                    shape.draw(g);
+            lab.pkg8.BackEnd.Shape shape;
+            for (lab.pkg8.BackEnd.Shape shapeToBeDrawn : canvas.getShapes()) {
+                if (!(shapeToBeDrawn == null)) {
+                    shapeToBeDrawn.draw(g);
+                }
+                for (int i = shapesCounted; i < canvas.getShapes().length; i++) {
+                    shape = canvas.getShapes()[i];
+                    if (shape instanceof Circle) {
+                        addIntoComboBox("circle");
+                    } else if (shape instanceof LineSegment) {
+                        addIntoComboBox("line");
+                    } else if (shape instanceof Square) {
+                        addIntoComboBox("square");
+                    } else {
+                        addIntoComboBox("rectangle");
+                    }
+                    shapesCounted++;
                 }
             }
         }
@@ -350,22 +360,18 @@ public class MiniPaint extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         new CreateLineSegment().setVisible(true);
-        jComboBox1.addItem("line".concat(count()));
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         new CreateSquare().setVisible(true);
-        jComboBox1.addItem("square".concat(count()));
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         new CreateRectangle().setVisible(true);
-        jComboBox1.addItem("rectangle".concat(count()));
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         new CreateCircle().setVisible(true);
-        jComboBox1.addItem("circle".concat(count()));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -406,13 +412,13 @@ public class MiniPaint extends javax.swing.JFrame {
             int index = Integer.parseInt(strIndex) - 1;
             Common shape = (Common) Array.get(canvas.getShapes(), index);
             if (shape instanceof Circle) {
-                new ResizeCircle((Circle)shape).setVisible(true);
+                new ResizeCircle((Circle) shape).setVisible(true);
             } else if (shape instanceof LineSegment) {
-                new ResizeLineSegment((LineSegment)shape).setVisible(true);
+                new ResizeLineSegment((LineSegment) shape).setVisible(true);
             } else if (shape instanceof Square) {
-                new ResizeSquare((Square)shape).setVisible(true);
+                new ResizeSquare((Square) shape).setVisible(true);
             } else if (shape instanceof Rectangle) {
-                new ResizeRectangle((Rectangle)shape).setVisible(true);
+                new ResizeRectangle((Rectangle) shape).setVisible(true);
             }
         } else {
             ImageIcon image = new ImageIcon("warning.png");

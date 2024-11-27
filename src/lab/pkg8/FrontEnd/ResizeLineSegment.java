@@ -4,7 +4,6 @@
  */
 package lab.pkg8.FrontEnd;
 
-import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
@@ -41,7 +40,7 @@ public class ResizeLineSegment extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Enter New X2 Coordinate");
 

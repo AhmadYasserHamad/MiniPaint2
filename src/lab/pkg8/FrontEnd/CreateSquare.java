@@ -5,6 +5,7 @@
 package lab.pkg8.FrontEnd;
 
 import lab.pkg8.BackEnd.Square;
+import lab.pkg8.FrontEnd.*;
 import java.awt.*;
 import java.util.*;
 import javax.swing.ImageIcon;
@@ -43,7 +44,7 @@ public class CreateSquare extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel3.setBackground(new java.awt.Color(68, 255, 107));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -147,7 +148,7 @@ public class CreateSquare extends javax.swing.JFrame {
         if (jTextField3.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty() || jTextField6.getText().isEmpty()) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Some fields are empty!", "Message", JOptionPane.PLAIN_MESSAGE, image);
-        } else if (Integer.parseInt(jTextField3.getText()) < 0 ||Integer.parseInt(jTextField3.getText()) > 416 || Integer.parseInt(jTextField4.getText()) < 0 || Integer.parseInt(jTextField4.getText()) > 212 || Integer.parseInt(jTextField5.getText()) <= 0) {
+        } else if (Integer.parseInt(jTextField3.getText()) < 0 || Integer.parseInt(jTextField3.getText()) > 416 || Integer.parseInt(jTextField4.getText()) < 0 || Integer.parseInt(jTextField4.getText()) > 212 || Integer.parseInt(jTextField5.getText()) <= 0) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {
