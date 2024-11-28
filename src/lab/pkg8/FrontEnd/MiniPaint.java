@@ -38,7 +38,7 @@ public class MiniPaint extends javax.swing.JFrame {
         drawingPanel = new Draw();
         drawingPanel.setBackground(Color.WHITE);
         jPanel1.setLayout(new BorderLayout());
-        jPanel1.setPreferredSize(new Dimension(416, 212));
+        jPanel1.setPreferredSize(new Dimension(491, 316));
         jPanel1.add(drawingPanel, BorderLayout.CENTER);
         jPanel1.revalidate();
         jPanel1.repaint();

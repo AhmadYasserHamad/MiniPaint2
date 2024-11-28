@@ -171,7 +171,7 @@ public class CreateLineSegment extends javax.swing.JFrame {
         if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField3.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty()) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Some fields are empty!", "Message", JOptionPane.PLAIN_MESSAGE, image);
-        } else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 416 || Integer.parseInt(jTextField2.getText()) < 0 || Integer.parseInt(jTextField2.getText()) > 212 || Integer.parseInt(jTextField3.getText()) < 0 || Integer.parseInt(jTextField4.getText()) < 0 || Integer.parseInt(jTextField3.getText()) <= 0 || Integer.parseInt(jTextField4.getText()) <= 0) {
+        } else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 491 || Integer.parseInt(jTextField2.getText()) < 0 || Integer.parseInt(jTextField2.getText()) > 316 || Integer.parseInt(jTextField3.getText()) < 0 || Integer.parseInt(jTextField4.getText()) < 0 || Integer.parseInt(jTextField3.getText()) <= 0 || Integer.parseInt(jTextField4.getText()) <= 0) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {

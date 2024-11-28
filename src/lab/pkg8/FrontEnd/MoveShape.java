@@ -118,7 +118,7 @@ public class MoveShape extends javax.swing.JFrame {
         if (jTextField3.getText().isEmpty() || jTextField7.getText().isEmpty()) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Some fields are empty!", "Message", JOptionPane.PLAIN_MESSAGE, image);
-        } else if (Integer.parseInt(jTextField3.getText()) < 0 || Integer.parseInt(jTextField3.getText()) > 416 || Integer.parseInt(jTextField7.getText()) < 0 || Integer.parseInt(jTextField7.getText()) > 212) {
+        } else if (Integer.parseInt(jTextField3.getText()) < 0 || Integer.parseInt(jTextField3.getText()) > 491 || Integer.parseInt(jTextField7.getText()) < 0 || Integer.parseInt(jTextField7.getText()) > 316) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {

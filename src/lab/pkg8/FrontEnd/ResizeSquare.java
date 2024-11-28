@@ -85,7 +85,7 @@ public class ResizeSquare extends javax.swing.JFrame {
         if (jTextField1.getText().isEmpty()) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Text field is empty!", "Message", JOptionPane.PLAIN_MESSAGE, image);
-        } else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 416) {
+        } else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 491) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {
