@@ -5,9 +5,12 @@
 package lab.pkg8.FrontEnd;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import lab.pkg8.BackEnd.Common;
+import lab.pkg8.BackEnd.LineSegment;
 
 /**
  *
@@ -122,7 +125,17 @@ public class MoveShape extends javax.swing.JFrame {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {
-            Point newPosition = new Point(Integer.parseInt(jTextField3.getText()), Integer.parseInt(jTextField7.getText()));
+            int xPosition = Integer.parseInt(jTextField3.getText());
+            int yPosition = Integer.parseInt(jTextField7.getText());
+            if (shape instanceof LineSegment) {
+                Map<String, Double> properties = new HashMap<>();
+                double xDifference = Math.abs(shape.getProperties().get("x-endpoint") - shape.getPosition().x);
+                double yDifference = Math.abs(shape.getProperties().get("y-endpoint") - shape.getPosition().y);
+                properties.put("x-endpoint", xDifference + xPosition);
+                properties.put("y-endpoint", yDifference + yPosition);
+                shape.setProperties(properties);
+            }
+            Point newPosition = new Point(xPosition, yPosition);
             shape.setPosition(newPosition);
             MiniPaint.drawingPanel.revalidate();
             MiniPaint.drawingPanel.repaint();
