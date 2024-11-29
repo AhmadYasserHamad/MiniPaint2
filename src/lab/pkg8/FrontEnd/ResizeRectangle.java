@@ -16,7 +16,8 @@ import lab.pkg8.BackEnd.Rectangle;
  */
 public class ResizeRectangle extends javax.swing.JFrame {
 
-    private static Rectangle rectangle;    
+    private static Rectangle rectangle;
+
     /**
      * Creates new form ResizeCircle
      */
@@ -95,16 +96,20 @@ public class ResizeRectangle extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Make sure text fields are not empty
         if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty()) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Some fields are empty!", "Message", JOptionPane.PLAIN_MESSAGE, image);
-        } else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 316 || Integer.parseInt(jTextField2.getText()) < 0 || Integer.parseInt(jTextField2.getText()) > 491) {
+        } // Make sure text fields are filled with proper correct and logical information
+        else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 316 || Integer.parseInt(jTextField2.getText()) < 0 || Integer.parseInt(jTextField2.getText()) > 491) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {
+            // New hashmap to change the properties of the exisiting shape
             Map<String, Double> properties = new HashMap<>();
             properties.put("length", Double.valueOf(jTextField1.getText()));
             properties.put("width", Double.valueOf(jTextField2.getText()));
+            // Set the new hashmap to replace the shape's exisiting hashset
             rectangle.setProperties(properties);
             MiniPaint.miniPaint.repaintObjects();
             this.dispose();

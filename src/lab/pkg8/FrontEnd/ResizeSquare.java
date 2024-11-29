@@ -15,7 +15,9 @@ import lab.pkg8.BackEnd.Square;
  * @author ahmadyasserhamad
  */
 public class ResizeSquare extends javax.swing.JFrame {
+
     private static Square square;
+
     /**
      * Creates new form ResizeCircle
      */
@@ -85,12 +87,15 @@ public class ResizeSquare extends javax.swing.JFrame {
         if (jTextField1.getText().isEmpty()) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Text field is empty!", "Message", JOptionPane.PLAIN_MESSAGE, image);
-        } else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 491) {
+        } // Make sure text fields are filled with proper correct and logical information
+        else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 491) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {
+            // New hashmap to change the properties of the exisiting shape
             Map<String, Double> properties = new HashMap<>();
             properties.put("side", Double.valueOf(jTextField1.getText()));
+            // Set the new hashmap to replace the shape's exisiting hashset
             square.setProperties(properties);
             MiniPaint.miniPaint.repaintObjects();
             this.dispose();

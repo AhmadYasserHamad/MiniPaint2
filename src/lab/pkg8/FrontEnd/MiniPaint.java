@@ -23,14 +23,21 @@ public class MiniPaint extends javax.swing.JFrame {
     /**
      * Creates new form MiniPaint
      */
+    // Acts as an object that is representative of the ongoing application that allows external classes to interact with the application. 
     public static MiniPaint miniPaint;
+    // Arraylist containing all shapes 
     public static lab.pkg8.BackEnd.Canvas canvas = new Canvas();
+    // Graphics component needed while drawing the shapes
     public static Graphics g;
+    // Indicates, through a string, the shape added - either a circle, line segment, a square, or a rectangle
     public static String shapeAdded;
+    // Keeps track of the shapes added to the comboBox so as not to repeat them
     private int shapesCounted = 0;
-    public static boolean added = false;
+    // Enables the shapes to be saved into the comboBox in the required format (i.e. 01, 04)
     private String counter = "";
+    // Helps the counter in formatting the required string
     private int shapesAdded = 0;
+    // Represents the drawing panel
     private JPanel drawingPanel;
 
     public MiniPaint() {
@@ -42,16 +49,19 @@ public class MiniPaint extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new Dimension(491, 316));
         drawingPanel = new JPanel() {
             @Override
+            // Repaint method calls upon the paintComponent method to redraw the shapes in the arraylist
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.clearRect(0, 0, getWidth(), getHeight());
                 lab.pkg8.BackEnd.Shape shape;
                 for (lab.pkg8.BackEnd.Shape shapeToBeDrawn : canvas.getShapes()) {
                     if (!(shapeToBeDrawn == null)) {
+                        // Draws the shape if it is not null (deleted) in the arraylist
                         shapeToBeDrawn.draw(g);
                     }
                     for (int i = shapesCounted; i < canvas.getShapes().length; i++) {
                         shape = canvas.getShapes()[i];
+                        // Each newly added shape is added into the comboBox  
                         if (shape instanceof Circle) {
                             addIntoComboBox("circle");
                         } else if (shape instanceof LineSegment) {
@@ -75,14 +85,15 @@ public class MiniPaint extends javax.swing.JFrame {
         jComboBox1.addItem("Choose Shape");
     }
 
-    public String addIntoComboBox(String shapeAdded) {
+    public void addIntoComboBox(String shapeAdded) {
+        // Formats the string as required and adds it into the comboBox
         counter = String.format("%02d", shapesAdded + 1);
         shapesAdded++;
         jComboBox1.addItem(shapeAdded + counter);
-        return shapeAdded + counter;
     }
 
     public boolean isNumeric(String str) {
+        // Makes sure the choosen option in the gui for the deletion/ colorization/ resizing/ moving of any objects is a numberic object and not the "Choose Shape" option
         try {
             Integer.parseInt(str);
             return true;
@@ -90,30 +101,42 @@ public class MiniPaint extends javax.swing.JFrame {
             return false;
         }
     }
-
+    // Stores the chosen color by the user to colorize the object
     private Color chosenColor;
 
     public void fillColor(Common shape) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // Stored chosenColor by the user
         chosenColor = JColorChooser.showDialog(null, "Colorize", chosenColor);
-        shape.setFillColor(chosenColor);
-        shape.setColor(null);
+        if (chosenColor != null) {
+            // If a color is chosen, the shape is then filled with the color and the border color is set to null
+            shape.setFillColor(chosenColor);
+            shape.setColor(null);
+        }
+        // Redraws the shapes after the edits done
         canvas.refresh(drawingPanel.getGraphics());
     }
 
     public void saveToFile() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // Displays new fileChooser window
         JFileChooser fileSave = new JFileChooser();
         fileSave.setDialogTitle("Save Shapes");
+        // Accepts only files of a certain extension
         fileSave.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
         fileSave.addChoosableFileFilter(filter);
+        // Stores the save button option
         int saved = fileSave.showSaveDialog(null);
         if (saved == JFileChooser.APPROVE_OPTION) {
             try {
+                // Retreives the selected file
                 File file = fileSave.getSelectedFile();
+                // Creates a FileOutputStream, which enables the compiler to write bytes into the selected file
                 FileOutputStream fileOutput = new FileOutputStream(file);
+                // Creates a ObjectOutputStream, which enables the compiler to write objects into the selected FileOutputStream through a serialized form
                 ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+                // Writes the canvas (object containing an arraylist of the shapes) into the objectOutput, to be stored in the file
                 objectOutput.writeObject(canvas);
                 objectOutput.close();
                 fileOutput.close();
@@ -127,21 +150,30 @@ public class MiniPaint extends javax.swing.JFrame {
 
     public void loadFromFile() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // Displays new fileChooser window
         JFileChooser fileLoad = new JFileChooser();
         fileLoad.setDialogTitle("Load Existing Shapes");
+        // Accepts only files of a certain extension, the same one specified by the load save function
         fileLoad.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
         fileLoad.addChoosableFileFilter(filter);
+        // Stores the load button option
         int loaded = fileLoad.showSaveDialog(null);
         if (loaded == JFileChooser.APPROVE_OPTION) {
             try {
+                // Retreives the loaded file
                 File file = fileLoad.getSelectedFile();
+                // Creates a FileInputStream, which enables the compiler to read the bytes stored in the selected file
                 FileInputStream fileInput = new FileInputStream(file);
+                // Creates a ObjectInputStream, which enables the compiler to read objects from the selected FileInputStream 
                 ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+                // A new arraylist is made to store the output of the objectInput object
                 Canvas newCanvas = (Canvas) objectInput.readObject();
                 for (lab.pkg8.BackEnd.Shape shape : newCanvas.getShapes()) {
+                    // Stores each loaded shape into the exisiting arraylist
                     canvas.addShape(shape);
                 }
+                // Redraws the shapes in the arraylist
                 drawingPanel.repaint();
                 JOptionPane.showMessageDialog(this, "Shapes loaded successfully!");
             } catch (Exception e) {
@@ -151,11 +183,13 @@ public class MiniPaint extends javax.swing.JFrame {
     }
 
     public void remove(Common shape) {
+        // Removes shape from the arraylist
         canvas.removeShape(shape);
-        repaint();
+        drawingPanel.repaint();
     }
 
     public void repaintObjects() {
+        // Public method to allow other shapes to be drawn in the canvas once they have been created externally from other classes
         drawingPanel.revalidate();
         drawingPanel.repaint();
     }

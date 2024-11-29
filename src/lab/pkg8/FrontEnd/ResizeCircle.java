@@ -15,7 +15,9 @@ import lab.pkg8.BackEnd.Circle;
  * @author ahmadyasserhamad
  */
 public class ResizeCircle extends javax.swing.JFrame {
+
     private static Circle circle;
+
     /**
      * Creates new form ResizeCircle
      */
@@ -82,15 +84,19 @@ public class ResizeCircle extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Make sure text fields are not empty
         if (jTextField1.getText().isEmpty()) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Text field is empty!", "Message", JOptionPane.PLAIN_MESSAGE, image);
-        } else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 491) {
+        } // Make sure text fields are filled with proper correct and logical information
+        else if (Integer.parseInt(jTextField1.getText()) < 0 || Integer.parseInt(jTextField1.getText()) > 491) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {
+            // New hashmap to change the properties of the exisiting shape
             Map<String, Double> properties = new HashMap<>();
             properties.put("radius", Double.valueOf(jTextField1.getText()));
+            // Set the new hashmap to replace the shape's exisiting hashset
             circle.setProperties(properties);
             MiniPaint.miniPaint.repaintObjects();
             this.dispose();

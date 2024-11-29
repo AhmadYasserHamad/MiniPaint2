@@ -117,25 +117,33 @@ public class MoveShape extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5AncestorResized
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // Make sure text fields are not empty
         if (jTextField3.getText().isEmpty() || jTextField7.getText().isEmpty()) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Some fields are empty!", "Message", JOptionPane.PLAIN_MESSAGE, image);
-        } else if (Integer.parseInt(jTextField3.getText()) < 0 || Integer.parseInt(jTextField3.getText()) > 491 || Integer.parseInt(jTextField7.getText()) < 0 || Integer.parseInt(jTextField7.getText()) > 316) {
+        }
+        // Make sure text fields are filled with proper correct and logical information
+        else if (Integer.parseInt(jTextField3.getText()) < 0 || Integer.parseInt(jTextField3.getText()) > 491 || Integer.parseInt(jTextField7.getText()) < 0 || Integer.parseInt(jTextField7.getText()) > 316) {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Invalid input!", "Message", JOptionPane.PLAIN_MESSAGE, image);
         } else {
+            // Stores new x and y values 
             int xPosition = Integer.parseInt(jTextField3.getText());
             int yPosition = Integer.parseInt(jTextField7.getText());
             if (shape instanceof LineSegment) {
+                // If the shape that has to be moved is a line segment, the end points would have to be adjusted accordingly -> a new hashset would have to be made
                 Map<String, Double> properties = new HashMap<>();
+                // Calculate the absolute difference between the newXpoint and the previousXpoint and the difference between the newYpoint and the previousYpoint
                 double xDifference = Math.abs(shape.getProperties().get("x-endpoint") - shape.getPosition().x);
                 double yDifference = Math.abs(shape.getProperties().get("y-endpoint") - shape.getPosition().y);
                 properties.put("x-endpoint", xDifference + xPosition);
                 properties.put("y-endpoint", yDifference + yPosition);
                 shape.setProperties(properties);
             }
+            // Create a new position and set it to the exisisting shape
             Point newPosition = new Point(xPosition, yPosition);
             shape.setPosition(newPosition);
+            // Repaint and revalidate shapes arraylist
             MiniPaint.miniPaint.repaintObjects();
             this.dispose();
         }
