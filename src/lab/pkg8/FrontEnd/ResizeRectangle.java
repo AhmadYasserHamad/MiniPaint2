@@ -16,14 +16,15 @@ import lab.pkg8.BackEnd.Rectangle;
  */
 public class ResizeRectangle extends javax.swing.JFrame {
 
-    private static Rectangle rectangle;
-
+    private static Rectangle rectangle;    
+    private static MiniPaint miniPaint;
     /**
      * Creates new form ResizeCircle
      */
-    public ResizeRectangle(Rectangle rectangle) {
+    public ResizeRectangle(Rectangle rectangle, MiniPaint miniPaint) {
         initComponents();
         this.rectangle = rectangle;
+        this.miniPaint = miniPaint;
         setTitle("Resize Rectangle");
     }
 
@@ -107,8 +108,7 @@ public class ResizeRectangle extends javax.swing.JFrame {
             properties.put("length", Double.valueOf(jTextField1.getText()));
             properties.put("width", Double.valueOf(jTextField2.getText()));
             rectangle.setProperties(properties);
-            MiniPaint.drawingPanel.revalidate();
-            MiniPaint.drawingPanel.repaint();
+            miniPaint.repaintObjects();
             this.dispose();
         }    }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -145,7 +145,7 @@ public class ResizeRectangle extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResizeRectangle(rectangle).setVisible(true);
+                new ResizeRectangle(rectangle, miniPaint).setVisible(true);
             }
         });
     }

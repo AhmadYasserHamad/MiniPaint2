@@ -15,12 +15,13 @@ import lab.pkg8.BackEnd.Rectangle;
  * @author ahmadyasserhamad
  */
 public class CreateRectangle extends javax.swing.JFrame {
-
+    private static MiniPaint miniPaint;
     /**
      * Creates new form CreateRectangle
      */
-    public CreateRectangle() {
+    public CreateRectangle(MiniPaint miniPaint) {
         initComponents();
+        this.miniPaint = miniPaint;
         setTitle("Create Rectangle");
     }
 
@@ -178,8 +179,7 @@ public class CreateRectangle extends javax.swing.JFrame {
             Color color = new Color(Integer.parseInt(colorArray[0]), Integer.parseInt(colorArray[1]), Integer.parseInt(colorArray[2]));
             lab.pkg8.BackEnd.Rectangle rectangle = new Rectangle(point, properties, color, null);
             MiniPaint.canvas.addShape(rectangle);
-            MiniPaint.drawingPanel.revalidate();
-            MiniPaint.drawingPanel.repaint();            
+            miniPaint.repaintObjects();
             this.dispose();
         }
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -214,7 +214,7 @@ public class CreateRectangle extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateRectangle().setVisible(true);
+                new CreateRectangle(miniPaint).setVisible(true);
             }
         });
     }

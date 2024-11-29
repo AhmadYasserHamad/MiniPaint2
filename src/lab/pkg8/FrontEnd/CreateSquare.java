@@ -16,12 +16,13 @@ import javax.swing.JOptionPane;
  * @author ahmadyasserhamad
  */
 public class CreateSquare extends javax.swing.JFrame {
-
+    private static MiniPaint miniPaint;
     /**
      * Creates new form CreateSquare
      */
-    public CreateSquare() {
+    public CreateSquare(MiniPaint miniPaint) {
         initComponents();
+        this.miniPaint = miniPaint;
         setTitle("Create Square");
     }
 
@@ -160,8 +161,7 @@ public class CreateSquare extends javax.swing.JFrame {
             Color color = new Color(Integer.parseInt(colorArray[0]), Integer.parseInt(colorArray[1]), Integer.parseInt(colorArray[2]));
             Square square = new Square(point, properties, color, null);
             MiniPaint.canvas.addShape(square);
-            MiniPaint.drawingPanel.revalidate();
-            MiniPaint.drawingPanel.repaint();
+            miniPaint.repaintObjects();
             this.dispose();
         }
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -196,7 +196,7 @@ public class CreateSquare extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateSquare().setVisible(true);
+                new CreateSquare(miniPaint).setVisible(true);
             }
         });
     }

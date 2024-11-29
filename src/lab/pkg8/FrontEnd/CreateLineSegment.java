@@ -15,12 +15,13 @@ import javax.swing.JOptionPane;
  * @author ahmadyasserhamad
  */
 public class CreateLineSegment extends javax.swing.JFrame {
-
+    private static MiniPaint miniPaint;
     /**
      * Creates new form CreateLineSegment
      */
-    public CreateLineSegment() {
+    public CreateLineSegment(MiniPaint miniPaint) {
         initComponents();
+        this.miniPaint = miniPaint;
         setTitle("Create Line Segment");
     }
 
@@ -184,8 +185,7 @@ public class CreateLineSegment extends javax.swing.JFrame {
             Color color = new Color(Integer.parseInt(colorArray[0]), Integer.parseInt(colorArray[1]), Integer.parseInt(colorArray[2]));
             LineSegment line = new LineSegment(point, properties, color, null);
             MiniPaint.canvas.addShape(line);
-            MiniPaint.drawingPanel.revalidate();
-            MiniPaint.drawingPanel.repaint();
+            miniPaint.repaintObjects();
             this.dispose();
         }
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -220,7 +220,7 @@ public class CreateLineSegment extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateLineSegment().setVisible(true);
+                new CreateLineSegment(miniPaint).setVisible(true);
             }
         });
     }

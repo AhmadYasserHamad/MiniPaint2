@@ -159,8 +159,7 @@ public class CreateCircle extends javax.swing.JFrame {
             Color color = new Color(Integer.parseInt(colorArray[0]), Integer.parseInt(colorArray[1]), Integer.parseInt(colorArray[2]));
             Circle circle = new Circle(point, properties, color, null);
             MiniPaint.canvas.addShape(circle);
-            MiniPaint.drawingPanel.revalidate();
-            MiniPaint.drawingPanel.repaint();
+            MiniPaint.miniPaint.repaintObjects();
             this.dispose();
         }
     }//GEN-LAST:event_jButton5ActionPerformed

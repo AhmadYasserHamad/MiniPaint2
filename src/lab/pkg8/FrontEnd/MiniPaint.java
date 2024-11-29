@@ -23,6 +23,7 @@ public class MiniPaint extends javax.swing.JFrame {
     /**
      * Creates new form MiniPaint
      */
+    public static MiniPaint miniPaint;
     public static lab.pkg8.BackEnd.Canvas canvas = new Canvas();
     public static Graphics g;
     public static String shapeAdded;
@@ -30,15 +31,43 @@ public class MiniPaint extends javax.swing.JFrame {
     public static boolean added = false;
     private String counter = "";
     private int shapesAdded = 0;
-    public static Draw drawingPanel;
+    private JPanel drawingPanel;
 
     public MiniPaint() {
+        miniPaint = this;
         initComponents();
         setTitle("Vector Drawing Application");
-        drawingPanel = new Draw();
-        drawingPanel.setBackground(Color.WHITE);
+        jPanel1.setBackground(Color.WHITE);
         jPanel1.setLayout(new BorderLayout());
         jPanel1.setPreferredSize(new Dimension(491, 316));
+        drawingPanel = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.clearRect(0, 0, getWidth(), getHeight());
+                lab.pkg8.BackEnd.Shape shape;
+                for (lab.pkg8.BackEnd.Shape shapeToBeDrawn : canvas.getShapes()) {
+                    if (!(shapeToBeDrawn == null)) {
+                        shapeToBeDrawn.draw(g);
+                    }
+                    for (int i = shapesCounted; i < canvas.getShapes().length; i++) {
+                        shape = canvas.getShapes()[i];
+                        if (shape instanceof Circle) {
+                            addIntoComboBox("circle");
+                        } else if (shape instanceof LineSegment) {
+                            addIntoComboBox("line");
+                        } else if (shape instanceof Square) {
+                            addIntoComboBox("square");
+                        } else {
+                            addIntoComboBox("rectangle");
+                        }
+                        shapesCounted++;
+                    }
+                }
+            }
+        };
+        drawingPanel.setBackground(Color.WHITE);
+        drawingPanel.setPreferredSize(new Dimension(491, 316));
         jPanel1.add(drawingPanel, BorderLayout.CENTER);
         jPanel1.revalidate();
         jPanel1.repaint();
@@ -62,107 +91,73 @@ public class MiniPaint extends javax.swing.JFrame {
         }
     }
 
-    public class Shape extends JFrame {
+    private Color chosenColor;
 
-        private Color chosenColor;
+    public void fillColor(Common shape) {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        chosenColor = JColorChooser.showDialog(null, "Colorize", chosenColor);
+        shape.setFillColor(chosenColor);
+        shape.setColor(null);
+        canvas.refresh(drawingPanel.getGraphics());
+    }
 
-        public void fillColor(Common shape) {
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            chosenColor = JColorChooser.showDialog(null, "Colorize", chosenColor);
-            shape.setFillColor(chosenColor);
-            shape.setColor(null);
-            canvas.refresh(drawingPanel.getGraphics());
-        }
+    public void saveToFile() {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JFileChooser fileSave = new JFileChooser();
+        fileSave.setDialogTitle("Save Shapes");
+        fileSave.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+        fileSave.addChoosableFileFilter(filter);
+        int saved = fileSave.showSaveDialog(null);
+        if (saved == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = fileSave.getSelectedFile();
+                FileOutputStream fileOutput = new FileOutputStream(file);
+                ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+                objectOutput.writeObject(canvas);
+                objectOutput.close();
+                fileOutput.close();
+                JOptionPane.showMessageDialog(this, "Shapes saved successfully!");
 
-        public void saveToFile() {
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            JFileChooser fileSave = new JFileChooser();
-            fileSave.setDialogTitle("Save Shapes");
-            fileSave.setAcceptAllFileFilterUsed(false);
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
-            fileSave.addChoosableFileFilter(filter);
-            int saved = fileSave.showSaveDialog(null);
-            if (saved == JFileChooser.APPROVE_OPTION) {
-                try {
-                    File file = fileSave.getSelectedFile();
-                    FileOutputStream fileOutput = new FileOutputStream(file);
-                    ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
-                    objectOutput.writeObject(canvas);
-                    objectOutput.close();
-                    fileOutput.close();
-                    JOptionPane.showMessageDialog(this, "Shapes saved successfully!");
-
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage());
-                }
-            }
-        }
-
-        public void loadFromFile() {
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            JFileChooser fileLoad = new JFileChooser();
-            fileLoad.setDialogTitle("Load Existing Shapes");
-            fileLoad.setAcceptAllFileFilterUsed(false);
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
-            fileLoad.addChoosableFileFilter(filter);
-            int loaded = fileLoad.showSaveDialog(null);
-            if (loaded == JFileChooser.APPROVE_OPTION) {
-                try {
-                    File file = fileLoad.getSelectedFile();
-                    FileInputStream fileInput = new FileInputStream(file);
-                    ObjectInputStream objectInput = new ObjectInputStream(fileInput);
-                    Canvas newCanvas = (Canvas) objectInput.readObject();
-                    for (lab.pkg8.BackEnd.Shape shape : newCanvas.getShapes()) {
-                        if (shape instanceof Circle) {
-                            canvas.addShape(shape);
-                        } else if (shape instanceof LineSegment) {
-                            canvas.addShape(shape);
-                        } else if (shape instanceof Square) {
-                            canvas.addShape(shape);
-                        } else {
-                            canvas.addShape(shape);
-                        }
-                    }
-                    drawingPanel.repaint();
-                    JOptionPane.showMessageDialog(this, "Shapes loaded successfully!");
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage());
-                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
             }
         }
     }
 
-    public class Draw extends JPanel {
-
-        @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.clearRect(0, 0, getWidth(), getHeight());
-            lab.pkg8.BackEnd.Shape shape;
-            for (lab.pkg8.BackEnd.Shape shapeToBeDrawn : canvas.getShapes()) {
-                if (!(shapeToBeDrawn == null)) {
-                    shapeToBeDrawn.draw(g);
+    public void loadFromFile() {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JFileChooser fileLoad = new JFileChooser();
+        fileLoad.setDialogTitle("Load Existing Shapes");
+        fileLoad.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+        fileLoad.addChoosableFileFilter(filter);
+        int loaded = fileLoad.showSaveDialog(null);
+        if (loaded == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = fileLoad.getSelectedFile();
+                FileInputStream fileInput = new FileInputStream(file);
+                ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+                Canvas newCanvas = (Canvas) objectInput.readObject();
+                for (lab.pkg8.BackEnd.Shape shape : newCanvas.getShapes()) {
+                    canvas.addShape(shape);
                 }
-                for (int i = shapesCounted; i < canvas.getShapes().length; i++) {
-                    shape = canvas.getShapes()[i];
-                    if (shape instanceof Circle) {
-                        addIntoComboBox("circle");
-                    } else if (shape instanceof LineSegment) {
-                        addIntoComboBox("line");
-                    } else if (shape instanceof Square) {
-                        addIntoComboBox("square");
-                    } else {
-                        addIntoComboBox("rectangle");
-                    }
-                    shapesCounted++;
-                }
+                drawingPanel.repaint();
+                JOptionPane.showMessageDialog(this, "Shapes loaded successfully!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
             }
         }
+    }
 
-        public void remove(Common shape) {
-            canvas.removeShape(shape);
-            repaint();
-        }
+    public void remove(Common shape) {
+        canvas.removeShape(shape);
+        repaint();
+    }
+
+    public void repaintObjects() {
+        drawingPanel.revalidate();
+        drawingPanel.repaint();
     }
 
     /**
@@ -359,15 +354,15 @@ public class MiniPaint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        new CreateLineSegment().setVisible(true);
+        new CreateLineSegment(miniPaint).setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new CreateSquare().setVisible(true);
+        new CreateSquare(miniPaint).setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        new CreateRectangle().setVisible(true);
+        new CreateRectangle(miniPaint).setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -380,7 +375,7 @@ public class MiniPaint extends javax.swing.JFrame {
         if (isNumeric(strIndex)) {
             int index = Integer.parseInt(strIndex) - 1;
             Common shape = (Common) Array.get(canvas.getShapes(), index);
-            new Shape().fillColor(shape);
+            fillColor(shape);
         } else {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Choosen option is not numeric, please try again!", "Message", JOptionPane.PLAIN_MESSAGE, image);
@@ -412,13 +407,13 @@ public class MiniPaint extends javax.swing.JFrame {
             int index = Integer.parseInt(strIndex) - 1;
             Common shape = (Common) Array.get(canvas.getShapes(), index);
             if (shape instanceof Circle) {
-                new ResizeCircle((Circle) shape).setVisible(true);
+                new ResizeCircle((Circle) shape, miniPaint).setVisible(true);
             } else if (shape instanceof LineSegment) {
-                new ResizeLineSegment((LineSegment) shape).setVisible(true);
+                new ResizeLineSegment((LineSegment) shape, miniPaint).setVisible(true);
             } else if (shape instanceof Square) {
-                new ResizeSquare((Square) shape).setVisible(true);
+                new ResizeSquare((Square) shape, miniPaint).setVisible(true);
             } else if (shape instanceof Rectangle) {
-                new ResizeRectangle((Rectangle) shape).setVisible(true);
+                new ResizeRectangle((Rectangle) shape, miniPaint).setVisible(true);
             }
         } else {
             ImageIcon image = new ImageIcon("warning.png");
@@ -432,7 +427,7 @@ public class MiniPaint extends javax.swing.JFrame {
         if (isNumeric(strIndex)) {
             int index = Integer.parseInt(strIndex) - 1;
             Common shape = (Common) Array.get(canvas.getShapes(), index);
-            new MoveShape(shape).setVisible(true);
+            new MoveShape(shape, miniPaint).setVisible(true);
         } else {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Choosen option is not numeric, please try again!", "Message", JOptionPane.PLAIN_MESSAGE, image);
@@ -440,11 +435,11 @@ public class MiniPaint extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        new Shape().loadFromFile();
+        loadFromFile();
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        new Shape().saveToFile();
+        saveToFile();
     }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
