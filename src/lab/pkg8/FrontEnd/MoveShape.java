@@ -19,15 +19,12 @@ import lab.pkg8.BackEnd.LineSegment;
 public class MoveShape extends javax.swing.JFrame {
 
     private static Common shape;
-    private static MiniPaint miniPaint;
-
     /**
      * Creates new form CreateSquare
      */
-    public MoveShape(Common shape, MiniPaint miniPaint) {
+    public MoveShape(Common shape) {
         initComponents();
         this.shape = shape;
-        this.miniPaint = miniPaint;
         setTitle("Move Shape");
     }
 
@@ -139,7 +136,7 @@ public class MoveShape extends javax.swing.JFrame {
             }
             Point newPosition = new Point(xPosition, yPosition);
             shape.setPosition(newPosition);
-            miniPaint.repaintObjects();
+            MiniPaint.miniPaint.repaintObjects();
             this.dispose();
         }
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -179,7 +176,7 @@ public class MoveShape extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MoveShape(shape, miniPaint).setVisible(true);
+                new MoveShape(shape).setVisible(true);
             }
         });
     }

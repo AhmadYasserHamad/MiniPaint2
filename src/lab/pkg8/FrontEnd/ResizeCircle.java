@@ -16,14 +16,12 @@ import lab.pkg8.BackEnd.Circle;
  */
 public class ResizeCircle extends javax.swing.JFrame {
     private static Circle circle;
-    private static MiniPaint miniPaint;
     /**
      * Creates new form ResizeCircle
      */
-    public ResizeCircle(Circle circle, MiniPaint miniPaint) {
+    public ResizeCircle(Circle circle) {
         initComponents();
         this.circle = circle;
-        this.miniPaint = miniPaint;
         setTitle("Resize Circle");
     }
 
@@ -94,7 +92,7 @@ public class ResizeCircle extends javax.swing.JFrame {
             Map<String, Double> properties = new HashMap<>();
             properties.put("radius", Double.valueOf(jTextField1.getText()));
             circle.setProperties(properties);
-            miniPaint.repaintObjects();
+            MiniPaint.miniPaint.repaintObjects();
             this.dispose();
         }    }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -128,7 +126,7 @@ public class ResizeCircle extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResizeCircle(circle, miniPaint).setVisible(true);
+                new ResizeCircle(circle).setVisible(true);
             }
         });
     }

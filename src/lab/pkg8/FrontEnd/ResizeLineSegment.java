@@ -17,15 +17,13 @@ import lab.pkg8.BackEnd.LineSegment;
 public class ResizeLineSegment extends javax.swing.JFrame {
 
     private static LineSegment line;
-    private static MiniPaint miniPaint;
 
     /**
      * Creates new form ResizeCircle
      */
-    public ResizeLineSegment(LineSegment line, MiniPaint miniPaint) {
+    public ResizeLineSegment(LineSegment line) {
         initComponents();
         this.line = line;
-        this.miniPaint = miniPaint;
         setTitle("Resize Line Segment");
     }
 
@@ -111,7 +109,7 @@ public class ResizeLineSegment extends javax.swing.JFrame {
             properties.put("x-endpoint", Double.valueOf(jTextField1.getText()));
             properties.put("y-endpoint", Double.valueOf(jTextField2.getText()));
             line.setProperties(properties);
-            miniPaint.repaintObjects();
+            MiniPaint.miniPaint.repaintObjects();
             this.dispose();
         }    }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -146,7 +144,7 @@ public class ResizeLineSegment extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResizeLineSegment(line, miniPaint).setVisible(true);
+                new ResizeLineSegment(line).setVisible(true);
             }
         });
     }

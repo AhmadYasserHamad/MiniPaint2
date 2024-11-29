@@ -16,14 +16,12 @@ import lab.pkg8.BackEnd.Square;
  */
 public class ResizeSquare extends javax.swing.JFrame {
     private static Square square;
-    private static MiniPaint miniPaint;
     /**
      * Creates new form ResizeCircle
      */
-    public ResizeSquare(Square square, MiniPaint miniPaint) {
+    public ResizeSquare(Square square) {
         initComponents();
         this.square = square;
-        this.miniPaint = miniPaint;
         setTitle("Resize Square");
     }
 
@@ -94,7 +92,7 @@ public class ResizeSquare extends javax.swing.JFrame {
             Map<String, Double> properties = new HashMap<>();
             properties.put("side", Double.valueOf(jTextField1.getText()));
             square.setProperties(properties);
-            miniPaint.repaintObjects();
+            MiniPaint.miniPaint.repaintObjects();
             this.dispose();
         }    }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -129,7 +127,7 @@ public class ResizeSquare extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResizeSquare(square, miniPaint).setVisible(true);
+                new ResizeSquare(square).setVisible(true);
             }
         });
     }

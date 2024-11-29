@@ -354,15 +354,15 @@ public class MiniPaint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        new CreateLineSegment(miniPaint).setVisible(true);
+        new CreateLineSegment().setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new CreateSquare(miniPaint).setVisible(true);
+        new CreateSquare().setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        new CreateRectangle(miniPaint).setVisible(true);
+        new CreateRectangle().setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -407,13 +407,13 @@ public class MiniPaint extends javax.swing.JFrame {
             int index = Integer.parseInt(strIndex) - 1;
             Common shape = (Common) Array.get(canvas.getShapes(), index);
             if (shape instanceof Circle) {
-                new ResizeCircle((Circle) shape, miniPaint).setVisible(true);
+                new ResizeCircle((Circle) shape).setVisible(true);
             } else if (shape instanceof LineSegment) {
-                new ResizeLineSegment((LineSegment) shape, miniPaint).setVisible(true);
+                new ResizeLineSegment((LineSegment) shape).setVisible(true);
             } else if (shape instanceof Square) {
-                new ResizeSquare((Square) shape, miniPaint).setVisible(true);
+                new ResizeSquare((Square) shape).setVisible(true);
             } else if (shape instanceof Rectangle) {
-                new ResizeRectangle((Rectangle) shape, miniPaint).setVisible(true);
+                new ResizeRectangle((Rectangle) shape).setVisible(true);
             }
         } else {
             ImageIcon image = new ImageIcon("warning.png");
@@ -427,7 +427,7 @@ public class MiniPaint extends javax.swing.JFrame {
         if (isNumeric(strIndex)) {
             int index = Integer.parseInt(strIndex) - 1;
             Common shape = (Common) Array.get(canvas.getShapes(), index);
-            new MoveShape(shape, miniPaint).setVisible(true);
+            new MoveShape(shape).setVisible(true);
         } else {
             ImageIcon image = new ImageIcon("warning.png");
             JOptionPane.showMessageDialog(this, "Choosen option is not numeric, please try again!", "Message", JOptionPane.PLAIN_MESSAGE, image);
